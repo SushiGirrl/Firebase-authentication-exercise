@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,8 +16,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
-//code starts here
+//authentication/try catch exercise
+/*
 let userInput = "";
 const inputElement = document.querySelector("input");
 
@@ -50,3 +54,40 @@ function renderApiData(apiData){
     div.appendChild(span);
     span.innerText = JSON.stringify(apiData);
 }
+ */
+const name = document.querySelector("#name").value;
+const button = document.querySelector("#submit");
+
+// Register a new user with email and password
+function registerUser() {
+    //because email and user are declared inside the registerUser-function
+    //and registerUser gets called when button is clicked, the program takes
+    //whatever input is in the input slots. if they were declared outside of
+    //the function, they would just be empty and we would get an invalid-error
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+
+    createUserWithEmailAndPassword(auth,email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User registered:", user.uid);
+        })
+        .catch((error) => {
+            alert("Registration error:" + error.message);
+        });
+}
+
+button.addEventListener("click", function (){
+    console.log("clicked button");
+    registerUser();
+})
+//opgave
+//implentation af log in og redirection to a dashboard
+
+//Altid lyt til emily XD
+//change flex box visibility directly in js
+//const xxx queryselctor (xxxx)
+//xxxx.style.display = "block" or "none"
+//documents = all notes
+//collection = user information (userID), note-text, etc
+//user id = user.uid
